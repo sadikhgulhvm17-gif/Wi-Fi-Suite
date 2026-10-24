@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="20dp"
+    android:background="#0F172A">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="𐩫𐩢𐩲 امـمدير امـحميري لامـشبكات"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="#38BDF8"
+        android:layout_gravity="center"
+        android:layout_marginBottom="20dp" />
+
+    <!-- بطاقة امـواي فاي -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="15dp"
+        android:background="#1E293B"
+        android:layout_marginBottom="15dp">
+        <TextView
+            android:id="@+id/tvWifi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            text="حالة امـواي فاي: جاري امـفحص..."
+            android:textSize="15sp"
+            android:textColor="#FFFFFF" />
+        <Button
+            android:id="@+id/btnWifi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="إعدادات امـواي فاي"
+            android:backgroundTint="#0284C7"
+            android:layout_marginTop="10dp" />
+    </LinearLayout>
+
+    <!-- بطاقة امـفورجي والاتصال -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="15dp"
+        android:background="#1E293B"
+        android:layout_marginBottom="15dp">
+        <TextView
+            android:id="@+id/tv4G"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="حالة امـفورجي (4G): جاري امـفحص..."
+            android:textSize="15sp"
+            android:textColor="#FFFFFF" />
+        <Button
+            android:id="@+id/btn4G"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="إعدادات امـفورجي / APN"
+            android:backgroundTint="#0284C7"
+            android:layout_marginTop="10dp" />
+    </LinearLayout>
+
+    <!-- بطاقة فحص امـسرعة وامـبينغ (إضافة مميزة) -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="15dp"
+        android:background="#1E293B">
+        <TextView
+            android:id="@+id/tvPing"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="حالة امـبينغ وامـسرعة: اضغط لفحص امـاتصال"
+            android:textSize="14sp"
+            android:textColor="#38BDF8" />
+        <Button
+            android:id="@+id/btnPing"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="فحص امـبينغ (Ping Test)"
+            android:backgroundTint="#059669"
+            android:layout_marginTop="10dp" />
+    </LinearLayout>
+
+</LinearLayout>
