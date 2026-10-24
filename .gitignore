@@ -1,0 +1,22 @@
+# Build artifacts
+target/
+build/
+*.class
+*.jar
+*.log
+
+# Flutter/Dart
+.dart_tool/
+.packages
+pubspec.lock
+
+# Native
+*.so
+*.o
+
+# APKs
+*.apk
+*.idsig
+
+# OS files
+.DS_Store
