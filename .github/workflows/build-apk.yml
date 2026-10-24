@@ -22,7 +22,14 @@ jobs:
         run: |
           flutter create .
           flutter pub add http
-          
+
+      - name: Patch Android Manifest for HTTP
+        working-directory: apps/flutter_app
+        run: |
+          # إضافة صلاحية الإنترنت والسماح بالـ Cleartext
+          sed -i 's/<application/<application android:usesCleartextTraffic="true"/' android/app/src/main/AndroidManifest.xml
+          sed -i '/<manifest/i \<uses-permission android:name="android.permission.INTERNET" \/>' android/app/src/main/AndroidManifest.xml
+
       - name: Build APK
         working-directory: apps/flutter_app
         run: flutter build apk --release
