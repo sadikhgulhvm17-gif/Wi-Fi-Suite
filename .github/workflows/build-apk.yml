@@ -23,28 +23,12 @@ jobs:
           flutter create .
           flutter pub add http
 
-      - name: Patch Android Manifest using xmlstarlet
+      - name: Replace Android Manifest with Custom One
         working-directory: apps/flutter_app
         run: |
-          # تثبيت أداة xmlstarlet
-          sudo apt-get update && sudo apt-get install -y xmlstarlet
-          
-          MANIFEST="android/app/src/main/AndroidManifest.xml"
-          
-          # إضافة صلاحية الإنترنت إذا لم تكن موجودة
-          if ! xmlstarlet sel -t -v "//uses-permission[@android:name='android.permission.INTERNET']" "$MANIFEST" | grep -q .; then
-            xmlstarlet ed -L -N android="http://schemas.android.com/apk/res/android" \
-              -i "/manifest" -t elem -n "uses-permission" \
-              -i "/manifest/uses-permission[last()]" -t attr -n "android:name" -v "android.permission.INTERNET" "$MANIFEST"
-          fi
-          
-          # إضافة usesCleartextTraffic إلى وسم التطبيق
-          if ! xmlstarlet sel -t -v "//application/@android:usesCleartextTraffic" "$MANIFEST" | grep -q "true"; then
-            xmlstarlet ed -L -N android="http://schemas.android.com/apk/res/android" \
-              -i "/manifest/application" -t attr -n "android:usesCleartextTraffic" -v "true" "$MANIFEST"
-          fi
-          
-          echo "AndroidManifest.xml patched successfully."
+          cp android/app/src/main/AndroidManifest.xml android/app/src/main/AndroidManifest.xml.bak
+          cp ../../apps/flutter_app/android/app/src/main/AndroidManifest.xml android/app/src/main/AndroidManifest.xml
+          echo "AndroidManifest.xml replaced successfully."
 
       - name: Build APK
         working-directory: apps/flutter_app
