@@ -23,12 +23,27 @@ jobs:
           flutter create .
           flutter pub add http
 
-      - name: Patch Android Manifest for HTTP
+      - name: Patch Android Manifest for HTTP (using Python)
         working-directory: apps/flutter_app
         run: |
-          # إضافة صلاحية الإنترنت والسماح بالـ Cleartext
-          sed -i 's/<application/<application android:usesCleartextTraffic="true"/' android/app/src/main/AndroidManifest.xml
-          sed -i '/<manifest/i \<uses-permission android:name="android.permission.INTERNET" \/>' android/app/src/main/AndroidManifest.xml
+          python3 -c "
+          import re
+          path = 'android/app/src/main/AndroidManifest.xml'
+          with open(path, 'r') as f:
+              content = f.read()
+          
+          # إضافة صلاحية الإنترنت إذا لم تكن موجودة
+          if 'android.permission.INTERNET' not in content:
+              content = content.replace('<manifest', '<uses-permission android:name=\"android.permission.INTERNET\" />\n<manifest', 1)
+          
+          # إضافة usesCleartextTraffic إلى وسم التطبيق
+          if 'android:usesCleartextTraffic' not in content:
+              content = content.replace('<application', '<application android:usesCleartextTraffic=\"true\"', 1)
+          
+          with open(path, 'w') as f:
+              f.write(content)
+          print('AndroidManifest.xml patched successfully.')
+          "
 
       - name: Build APK
         working-directory: apps/flutter_app
