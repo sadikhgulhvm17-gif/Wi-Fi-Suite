@@ -23,12 +23,12 @@ jobs:
           flutter create .
           flutter pub add http
 
-      - name: Replace Android Manifest with Custom One
+      - name: Patch Android Manifest
         working-directory: apps/flutter_app
         run: |
-          cp android/app/src/main/AndroidManifest.xml android/app/src/main/AndroidManifest.xml.bak
-          cp ../../apps/flutter_app/android/app/src/main/AndroidManifest.xml android/app/src/main/AndroidManifest.xml
-          echo "AndroidManifest.xml replaced successfully."
+          # نسخ الملف المخصص فوق الملف الافتراضي
+          cp custom_AndroidManifest.xml android/app/src/main/AndroidManifest.xml
+          echo "AndroidManifest.xml patched successfully."
 
       - name: Build APK
         working-directory: apps/flutter_app
