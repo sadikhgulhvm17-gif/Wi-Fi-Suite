@@ -23,12 +23,16 @@ jobs:
           flutter create .
           flutter pub add http
 
-      - name: Patch Android Manifest
+      - name: Patch Android Config
         working-directory: apps/flutter_app
         run: |
-          # نسخ الملف المخصص فوق الملف الافتراضي
+          # 1. نسخ ملف المانيفست المخصص (الذي لا يحتوي على package)
           cp custom_AndroidManifest.xml android/app/src/main/AndroidManifest.xml
-          echo "AndroidManifest.xml patched successfully."
+          
+          # 2. إضافة namespace إلى build.gradle تلقائياً
+          sed -i '/^android {/a \    namespace "com.example.wifi_suite"' android/app/build.gradle
+          
+          echo "Android Config patched successfully."
 
       - name: Build APK
         working-directory: apps/flutter_app
