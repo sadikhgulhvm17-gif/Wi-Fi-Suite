@@ -23,27 +23,28 @@ jobs:
           flutter create .
           flutter pub add http
 
-      - name: Patch Android Manifest for HTTP (using Python)
+      - name: Patch Android Manifest using xmlstarlet
         working-directory: apps/flutter_app
         run: |
-          python3 -c "
-          import re
-          path = 'android/app/src/main/AndroidManifest.xml'
-          with open(path, 'r') as f:
-              content = f.read()
+          # تثبيت أداة xmlstarlet
+          sudo apt-get update && sudo apt-get install -y xmlstarlet
+          
+          MANIFEST="android/app/src/main/AndroidManifest.xml"
           
           # إضافة صلاحية الإنترنت إذا لم تكن موجودة
-          if 'android.permission.INTERNET' not in content:
-              content = content.replace('<manifest', '<uses-permission android:name=\"android.permission.INTERNET\" />\n<manifest', 1)
+          if ! xmlstarlet sel -t -v "//uses-permission[@android:name='android.permission.INTERNET']" "$MANIFEST" | grep -q .; then
+            xmlstarlet ed -L -N android="http://schemas.android.com/apk/res/android" \
+              -i "/manifest" -t elem -n "uses-permission" \
+              -i "/manifest/uses-permission[last()]" -t attr -n "android:name" -v "android.permission.INTERNET" "$MANIFEST"
+          fi
           
           # إضافة usesCleartextTraffic إلى وسم التطبيق
-          if 'android:usesCleartextTraffic' not in content:
-              content = content.replace('<application', '<application android:usesCleartextTraffic=\"true\"', 1)
+          if ! xmlstarlet sel -t -v "//application/@android:usesCleartextTraffic" "$MANIFEST" | grep -q "true"; then
+            xmlstarlet ed -L -N android="http://schemas.android.com/apk/res/android" \
+              -i "/manifest/application" -t attr -n "android:usesCleartextTraffic" -v "true" "$MANIFEST"
+          fi
           
-          with open(path, 'w') as f:
-              f.write(content)
-          print('AndroidManifest.xml patched successfully.')
-          "
+          echo "AndroidManifest.xml patched successfully."
 
       - name: Build APK
         working-directory: apps/flutter_app
